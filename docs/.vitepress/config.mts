@@ -14,7 +14,7 @@ const base = rawBase.startsWith('/')
     : `${rawBase}/`
   : `/${rawBase}/`
 
-const siteUrl = `https://build-workbench.github.io/chatroom/`
+const siteUrl = `https://holtwood-projects.github.io/chatroom/`
 
 export default withMermaid(defineConfig({
   title: 'ChatRoom',
@@ -32,7 +32,7 @@ export default withMermaid(defineConfig({
   head: [
     ['link', { rel: 'canonical', href: siteUrl }],
     ['meta', { name: 'theme-color', content: '#1e3a5f' }],
-    ['meta', { name: 'author', content: 'build-workbench' }],
+    ['meta', { name: 'author', content: 'holtwood-projects' }],
     ['meta', { name: 'keywords', content: 'ChatRoom, Go, React, WebSocket, PostgreSQL, 实时聊天, 教学项目' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -70,11 +70,11 @@ export default withMermaid(defineConfig({
     siteTitle: 'ChatRoom',
     logo: '/logo.svg',
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/build-workbench/chatroom' },
+      { icon: 'github', link: 'https://github.com/holtwood-projects/chatroom' },
     ],
     externalLinkIcon: true,
     editLink: {
-      pattern: 'https://github.com/build-workbench/chatroom/edit/main/docs/:path',
+      pattern: 'https://github.com/holtwood-projects/chatroom/edit/main/docs/:path',
       text: '在 GitHub 上编辑此页',
     },
     nav: [
@@ -121,7 +121,7 @@ export default withMermaid(defineConfig({
     docFooter: { prev: '上一页', next: '下一页' },
     footer: {
       message: '基于 MIT 许可证发布',
-      copyright: 'Copyright © 2025-2026 build-workbench',
+      copyright: 'Copyright © 2025-2026 holtwood-projects',
     },
     lastUpdated: { text: '最后更新于' },
     returnToTopLabel: '回到顶部',

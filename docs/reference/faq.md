@@ -35,7 +35,7 @@
 
 ### 推荐的源码阅读顺序？
 
-见 [快速开始](/tutorials/local-dev) 页面的"推荐阅读路线"，或直接查看 [README](https://github.com/build-workbench/chatroom) 中的阅读路线表。
+见 [快速开始](/tutorials/local-dev) 页面的"推荐阅读路线"，或直接查看 [README](https://github.com/holtwood-projects/chatroom) 中的阅读路线表。
 
 ---
 
@@ -203,4 +203,4 @@ make test && npm --prefix frontend run test
 
 ### 版本号规则？
 
-遵循 [语义化版本](https://semver.org/lang/zh-CN/)。版本历史见 [`CHANGELOG.md`](https://github.com/build-workbench/chatroom/blob/main/CHANGELOG.md)。
+遵循 [语义化版本](https://semver.org/lang/zh-CN/)。版本历史见 [`CHANGELOG.md`](https://github.com/holtwood-projects/chatroom/blob/main/CHANGELOG.md)。

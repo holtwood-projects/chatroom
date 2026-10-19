@@ -4,8 +4,8 @@
 
 # ChatRoom
 
-[![CI](https://github.com/build-workbench/chatroom/actions/workflows/ci.yml/badge.svg)](https://github.com/build-workbench/chatroom/actions/workflows/ci.yml)
-[![Docs](https://github.com/build-workbench/chatroom/actions/workflows/pages.yml/badge.svg)](https://build-workbench.github.io/chatroom/)
+[![CI](https://github.com/holtwood-projects/chatroom/actions/workflows/ci.yml/badge.svg)](https://github.com/holtwood-projects/chatroom/actions/workflows/ci.yml)
+[![Docs](https://github.com/holtwood-projects/chatroom/actions/workflows/pages.yml/badge.svg)](https://holtwood-projects.github.io/chatroom/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A lightweight real-time chat room built with **Go + React + PostgreSQL + WebSocket**, used to practice wiring up the full-stack fundamentals.
@@ -64,7 +64,7 @@ docker compose up -d
 
 - Front-end page (local development): http://localhost:5173
 - Back-end service / Docker page: http://localhost:8080
-- Full documentation site: https://build-workbench.github.io/chatroom/
+- Full documentation site: https://holtwood-projects.github.io/chatroom/
 
 ## Production deployment
 
@@ -125,7 +125,7 @@ npm --prefix frontend run build # 前端生产打包
 
 ## Protocol & Documentation
 
-- [Full documentation site](https://build-workbench.github.io/chatroom/) (architecture design, API reference and testing experiments)
+- [Full documentation site](https://holtwood-projects.github.io/chatroom/) (architecture design, API reference and testing experiments)
 - [MIT License](LICENSE)
 
 ---
@@ -135,8 +135,8 @@ npm --prefix frontend run build # 前端生产打包
 
 # ChatRoom
 
-[![CI](https://github.com/build-workbench/chatroom/actions/workflows/ci.yml/badge.svg)](https://github.com/build-workbench/chatroom/actions/workflows/ci.yml)
-[![Docs](https://github.com/build-workbench/chatroom/actions/workflows/pages.yml/badge.svg)](https://build-workbench.github.io/chatroom/)
+[![CI](https://github.com/holtwood-projects/chatroom/actions/workflows/ci.yml/badge.svg)](https://github.com/holtwood-projects/chatroom/actions/workflows/ci.yml)
+[![Docs](https://github.com/holtwood-projects/chatroom/actions/workflows/pages.yml/badge.svg)](https://holtwood-projects.github.io/chatroom/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 基于 **Go + React + PostgreSQL + WebSocket** 实现的轻量实时聊天室，用于串联和练习全栈基础链路。
@@ -195,7 +195,7 @@ docker compose up -d
 
 - 前端页面（本地开发）：http://localhost:5173
 - 后端服务 / Docker 页面：http://localhost:8080
-- 完整文档站：https://build-workbench.github.io/chatroom/
+- 完整文档站：https://holtwood-projects.github.io/chatroom/
 
 ## 生产部署
 
@@ -256,5 +256,5 @@ npm --prefix frontend run build # 前端生产打包
 
 ## 协议与文档
 
-- [完整文档站](https://build-workbench.github.io/chatroom/)（架构设计、API 参考与测试实验）
+- [完整文档站](https://holtwood-projects.github.io/chatroom/)（架构设计、API 参考与测试实验）
 - [MIT License](LICENSE)

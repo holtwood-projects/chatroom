@@ -229,3 +229,49 @@ func TestRoomHub_Concurrent(t *testing.T) {
 		t.Errorf("Online() after concurrent register = %d, want %d", rh.Online(), numClients)
 	}
 }
+
+// TestHub_CleanupRemovesRoomBeforeStopping 覆盖空房清理的顺序：必须先摘除
+// map 条目再 Stop，否则 GetRoom 可能返回已停止的 RoomHub。
+func TestHub_CleanupRemovesRoomBeforeStopping(t *testing.T) {
+	hub := NewHub()
+	hub.cleanupAfter = time.Millisecond
+	t.Cleanup(hub.Shutdown)
+
+	rh := hub.GetRoom(7)
+	hub.cleanupRoomLater(rh)
+
+	deadline := time.Now().Add(2 * time.Second)
+	for {
+		select {
+		case <-rh.stop:
+			hub.mu.RLock()
+			_, exists := hub.rooms[7]
+			hub.mu.RUnlock()
+			if exists {
+				t.Fatal("room still present in map after Stop")
+			}
+			return
+		default:
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("cleanup did not stop the empty room")
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+}
+
+// TestRoomHub_RegisterAfterStopDoesNotBlock 覆盖 register 的 stop 分支：
+// 房间已停止时发送方不能永久阻塞（原实现会导致 handler goroutine 泄漏）。
+func TestRoomHub_RegisterAfterStopDoesNotBlock(t *testing.T) {
+	hub := NewHub()
+	t.Cleanup(hub.Shutdown)
+	rh := hub.GetRoom(8)
+	rh.Stop()
+
+	client := &Client{room: rh, send: make(chan []byte, 1)}
+	select {
+	case rh.register <- client:
+		t.Fatal("register on a stopped room must not succeed")
+	case <-rh.stop:
+	}
+}

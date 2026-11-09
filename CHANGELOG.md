@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - 补全 HTTP 服务超时配置（Read/Write/IdleTimeout、MaxHeaderBytes），加固慢连接与慢请求防护
+- 修复空房延迟清理与新连接注册的竞态：清理定时器原先先 `Stop()` 再从 Hub 摘除房间，窗口内新连接会拿到已停止的 `RoomHub`，`register` 在无人接收的 channel 上永久阻塞并泄漏 handler goroutine；现在先在写锁内确认并摘除 map 条目再停止，`register`/`unregister` 同时监听 `stop` 通道兜底
+- 修复慢客户端被广播清理后在线人数永久偏高、空房不再触发延迟清理的问题（`broadcastToClients` 删除客户端后同步 `updateOnline` 并触发 `cleanupRoomLater`）
+- 新增空房清理顺序与停止后注册不阻塞的回归测试
 
 ## [v2.2.0] - 2026-09-28
 ### Changed

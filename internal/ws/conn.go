@@ -148,7 +148,14 @@ func Serve(h *Hub, db *gorm.DB, cfg config.Config) gin.HandlerFunc {
 			uname:     user.Username,
 			cfg:       cfg,
 		}
-		rh.register <- client
+		// GetRoom 之后房间可能被延迟清理：若 run goroutine 已退出，
+		// 直接发送会永久阻塞。stop 已关闭时关闭连接，让客户端重连。
+		select {
+		case rh.register <- client:
+		case <-rh.stop:
+			_ = conn.Close()
+			return
+		}
 
 		go client.writePump()
 		client.readPump()
@@ -158,7 +165,11 @@ func Serve(h *Hub, db *gorm.DB, cfg config.Config) gin.HandlerFunc {
 // readPump 负责读取客户端信息、校验输入并推送到房间广播。
 func (c *Client) readPump() {
 	defer func() {
-		c.room.unregister <- c
+		// 房间可能已停止；此时 unregister 无人接收，必须走 stop 分支。
+		select {
+		case c.room.unregister <- c:
+		case <-c.room.stop:
+		}
 		_ = c.conn.Close()
 	}()
 	c.conn.SetReadLimit(c.cfg.WsMaxMessageSize)

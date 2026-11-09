@@ -55,15 +55,18 @@ func (h *Hub) cleanupRoomLater(room *RoomHub) {
 		return
 	}
 	time.AfterFunc(h.cleanupAfter, func() {
-		if room.Online() != 0 {
+		// 先在写锁内确认空房并摘除 map 条目，再 Stop。顺序反过来会留下
+		// 窗口：GetRoom 仍能返回已停止的 RoomHub，新连接的 register
+		// 在无人接收的 channel 上永久阻塞（handler goroutine 泄漏）。
+		h.mu.Lock()
+		if h.rooms[room.roomID] != room || room.Online() != 0 {
+			h.mu.Unlock()
 			return
 		}
-		room.Stop()
-		h.mu.Lock()
-		if h.rooms[room.roomID] == room {
-			delete(h.rooms, room.roomID)
-		}
+		delete(h.rooms, room.roomID)
 		h.mu.Unlock()
+
+		room.Stop()
 	})
 }
 
@@ -103,13 +106,23 @@ func NewRoomHub(roomID uint) *RoomHub {
 // 注意：此函数会关闭慢客户端的 send 通道，但会先从 clients map 中删除，
 // 这样后续的 unregister case 可以通过检查 clients map 来避免重复关闭。
 func (rh *RoomHub) broadcastToClients(data []byte) {
+	dropped := false
 	for cli := range rh.clients {
 		select {
 		case cli.send <- data:
 		default:
-			// 先从 map 中删除，再关闭通道，防止 unregister case 重复关闭
+			// 先从 map 中删除，再关闭通道，防止 unregister case 重复关闭。
+			// 这里也必须同步在线人数，否则后续 unregister 因 map miss 提前
+			// 返回，在线数会永久偏高、空房也不会触发延迟清理。
 			delete(rh.clients, cli)
 			close(cli.send)
+			dropped = true
+		}
+	}
+	if dropped {
+		rh.updateOnline()
+		if len(rh.clients) == 0 && rh.parent != nil {
+			rh.parent.cleanupRoomLater(rh)
 		}
 	}
 }
